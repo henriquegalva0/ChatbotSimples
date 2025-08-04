@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <title>Testing Chatbot Flask</title>
+</head>
+<body>
+    <h1>Testing Chatbot Flask</h1>
+    <form method="POST">
+        <label for="user_input">Input Message</label>
+        <input type="text" id="user_input" name="user_input" required>
+        <button type="submit">Submit</button>
+    </form>
+
+    <ul>
+        {% for msg in display %}
+            <h2>{{ msg['role'] }}</h2>
+            {{ msg['content'] }}
+        {% endfor %}
+    </ul>
+
+</body>
+</html>
