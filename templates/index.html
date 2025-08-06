@@ -7,14 +7,14 @@
 <body>
     <h1>Testing Chatbot Flask</h1>
     <form method="POST">
-        <label for="user_input">Input Message</label>
-        <input type="text" id="user_input" name="user_input" required>
+        <label for="input_usuario">Input Message</label>
+        <input type="text" id="input_usuario" name="input_usuario" required>
         <button type="submit">Submit</button>
     </form>
 
     <ul>
-        {% for msg in message %}
-            <h2>{{ msg }}</h2>
+        {% for msg in display %}
+            <h2>{{ msg.split(':')[0] }}</h2>{{ msg.split(':')[1] }}
         {% endfor %}
     </ul>
 
