@@ -1,5 +1,5 @@
 ## [Screenshot]
-![Image](.png)
+![Image](screenshot_project.png)
 
 ## [Português]
 
