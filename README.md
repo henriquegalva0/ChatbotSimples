@@ -1,6 +1,3 @@
-## [Screenshot]
-![Image](screenshot_project.png)
-
 ## [Português]
 
 # Projeto
@@ -76,3 +73,6 @@ These parameters may vary depending on your goals and hardware. I’m using an I
 
 ### Recommendations
 [Quantized models](https://github.com/Efficient-ML/Awesome-Model-Quantization) are always welcome. Also, **use a GPU for processing** (I have an AMD graphics card, so that’s not possible in my case).
+
+## [Screenshot]
+![Image](screenshot_project.png)
