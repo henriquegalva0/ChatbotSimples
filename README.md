@@ -1,9 +1,10 @@
+# Screenshot
+![Image](chatbottestproject.png)
+
 ## [Português]
 
 # Projeto
 Estou elaborando meu primeiro chatbot utilizando um modelo [Mistral](https://mistral.ai/models), o qual funciona por meio da elaboração de prompts bem definidos. O modelo pode apresentar falhas por falta de suporte ao português ou limitações do modelo, **haja vista que é um projeto teste**.
-
-![Image](chatbottestproject.png)
 
 ## Percurso
 Comecei o projeto visando usar grandes modelos de linguagem para desenvolver o chatbot direto do [HuggingFace](https://huggingface.co/). O primeiro deles foi o *[DeepSeek-R1](https://huggingface.co/deepseek-ai/DeepSeek-R1)* que demonstrou uma perfomance excepcional, porém extremamente custosa computacionalmente. Após isso, utilizei o modelo transformer *[BERT](https://huggingface.co/neuralmind/bert-base-portuguese-cased)*, no entanto ele não funcionava precisamente para o que eu necessitava.
