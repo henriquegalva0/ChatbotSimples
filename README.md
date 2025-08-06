@@ -52,7 +52,7 @@ This shows that nowadays, **with minimal hardware and few lines of code**, it's 
 I created an imaginary scenario of a market called *Floke* which recently adopted chatbot technology and implemented *Flokebot* – a digital assistant for online customer service. In this context, I briefly created a prompt in the [utils.py](utils.py) file just to demonstrate the chatbot’s capabilities and functionality.
 
 ### Specifications
-The chosen model was *[mistral-Q4KM](https://huggingface.co/TheBloke/Mistral-7B-Instruct-v0.2-GGUF/tree/main)* in the *[GGUF](https://github.com/ggml-org/ggml/blob/master/docs/gguf.md)* format, which **is not located in the [models](models/)** folder to avoid increasing the repository size.
+The chosen model was *[mistral-Q4KM](https://huggingface.co/TheBloke/Mistral-7B-Instruct-v0.2-GGUF/tree/main)* in the *[GGUF](https://github.com/ggml-org/ggml/blob/master/docs/gguf.md)* format, which **is not structured in the [models](models/)** folder to avoid increasing the repository size.
 
 It’s possible to use methods like *[RAG](https://github.com/NirDiamant/RAG_Techniques)* to increase the range of information passed to the bot and expand its context window.
 
