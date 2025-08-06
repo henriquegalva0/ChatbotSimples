@@ -13,9 +13,8 @@
     </form>
 
     <ul>
-        {% for msg in display %}
-            <h2>{{ msg['role'] }}</h2>
-            {{ msg['content'] }}
+        {% for msg in message %}
+            <h2>{{ msg }}</h2>
         {% endfor %}
     </ul>
 
