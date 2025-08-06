@@ -2,21 +2,452 @@
 <html lang="pt-br">
 <head>
     <meta charset="UTF-8">
-    <title>Testing Chatbot Flask</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Flokebot - Assistente Virtual</title>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@100;200;300;400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Montserrat', sans-serif;
+            font-weight: 300;
+            height: 100vh;
+            overflow: hidden;
+            background: linear-gradient(135deg, #2c3e50, #34495e, #1abc9c);
+            background-size: 400% 400%;
+            animation: backgroundShift 15s ease infinite;
+        }
+
+        @keyframes backgroundShift {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+
+        /* Particle Background */
+        .particles {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: 1;
+        }
+
+        .particle {
+            position: absolute;
+            width: 4px;
+            height: 4px;
+            background: rgba(255, 255, 255, 0.3);
+            border-radius: 50%;
+            animation: float 6s ease-in-out infinite;
+        }
+
+        @keyframes float {
+            0%, 100% { transform: translateY(0px) rotate(0deg); opacity: 0.3; }
+            50% { transform: translateY(-20px) rotate(180deg); opacity: 0.8; }
+        }
+
+        /* Top Bar */
+        .top-bar {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 60px;
+            background: rgba(144, 238, 144, 0.3);
+            backdrop-filter: blur(10px);
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+            animation: gradientShift 8s ease infinite;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 1000;
+            box-shadow: 0 2px 20px rgba(0, 0, 0, 0.1);
+        }
+
+        @keyframes gradientShift {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+
+        .top-bar h1 {
+            color: white;
+            font-size: 24px;
+            font-weight: 200;
+            text-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+            letter-spacing: 1px;
+        }
+
+        /* Main Container */
+        .container {
+            display: flex;
+            flex-direction: column;
+            height: 100vh;
+            padding-top: 60px;
+            z-index: 10;
+            position: relative;
+        }
+
+        /* Chat Container */
+        .chat-container {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+            width: 100%;
+            min-height: calc(100vh - 60px);
+        }
+
+        /* Flokebot Title */
+        .bot-title {
+            text-align: center;
+            color: white;
+            font-size: 48px;
+            font-weight: 200;
+            margin-bottom: 30px;
+            text-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+            animation: titleGlow 3s ease-in-out infinite alternate;
+        }
+
+        @keyframes titleGlow {
+            from { text-shadow: 0 4px 8px rgba(0, 0, 0, 0.3); }
+            to { text-shadow: 0 4px 20px rgba(255, 255, 255, 0.3); }
+        }
+
+        /* Input Container */
+        .input-container {
+            position: relative;
+            margin-bottom: 30px;
+            width: 100%;
+            max-width: 600px;
+        }
+
+        .chat-input {
+            width: 100%;
+            padding: 20px 25px;
+            background: rgba(255, 255, 255, 0.1);
+            border: 2px solid rgba(255, 255, 255, 0.2);
+            border-radius: 50px;
+            color: white;
+            font-size: 18px;
+            font-weight: 300;
+            outline: none;
+            backdrop-filter: blur(10px);
+            transition: all 0.3s ease;
+            text-align: center;
+        }
+
+        .chat-input::placeholder {
+            color: rgba(255, 255, 255, 0.5);
+            font-style: italic;
+        }
+
+        .chat-input:focus {
+            border-color: rgba(255, 255, 255, 0.5);
+            background: rgba(255, 255, 255, 0.15);
+            box-shadow: 0 0 30px rgba(255, 255, 255, 0.1);
+        }
+
+        /* Messages Container */
+        .messages-container {
+            flex: 1;
+            overflow-y: auto;
+            padding: 20px 0;
+            max-height: 400px;
+            width: 100%;
+            max-width: 600px;
+        }
+
+        .message {
+            display: flex;
+            align-items: flex-start;
+            margin-bottom: 15px;
+            animation: messageSlide 0.5s ease-out;
+        }
+
+        @keyframes messageSlide {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .message-content {
+            background: rgba(0, 0, 0, 0.3);
+            padding: 15px 20px;
+            border-radius: 20px;
+            color: white;
+            max-width: 80%;
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            font-weight: 300;
+        }
+
+        .message-emoji {
+            font-size: 24px;
+            margin-right: 15px;
+            margin-top: 5px;
+        }
+
+        .user-message {
+            justify-content: flex-end;
+        }
+
+        .user-message .message-content {
+            background: rgba(144, 238, 144, 0.2);
+            border: 1px solid rgba(144, 238, 144, 0.3);
+        }
+
+        .user-message .message-emoji {
+            order: 2;
+            margin-right: 0;
+            margin-left: 15px;
+        }
+
+        .bot-message .message-content {
+            background: rgba(0, 139, 139, 0.2);
+            border: 1px solid rgba(0, 139, 139, 0.3);
+        }
+
+        /* Loading Animation */
+        .loading {
+            display: none;
+            justify-content: center;
+            align-items: center;
+            margin: 20px 0;
+        }
+
+        .loading.show {
+            display: flex;
+        }
+
+        .loading-dots {
+            display: flex;
+            gap: 8px;
+        }
+
+        .loading-dot {
+            width: 12px;
+            height: 12px;
+            background: rgba(255, 255, 255, 0.7);
+            border-radius: 50%;
+            animation: loadingBounce 1.4s ease-in-out infinite both;
+        }
+
+        .loading-dot:nth-child(1) { animation-delay: -0.32s; }
+        .loading-dot:nth-child(2) { animation-delay: -0.16s; }
+
+        @keyframes loadingBounce {
+            0%, 80%, 100% { transform: scale(0); }
+            40% { transform: scale(1); }
+        }
+
+        /* Scrollbar Styling */
+        .messages-container::-webkit-scrollbar {
+            width: 8px;
+        }
+
+        .messages-container::-webkit-scrollbar-track {
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 10px;
+        }
+
+        .messages-container::-webkit-scrollbar-thumb {
+            background: rgba(255, 255, 255, 0.3);
+            border-radius: 10px;
+        }
+
+        .messages-container::-webkit-scrollbar-thumb:hover {
+            background: rgba(255, 255, 255, 0.5);
+        }
+
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            .bot-title {
+                font-size: 36px;
+                font-weight: 200;
+                margin-bottom: 20px;
+            }
+
+            .chat-input {
+                font-size: 16px;
+                font-weight: 300;
+                padding: 15px 20px;
+            }
+
+            .message-content {
+                max-width: 90%;
+                padding: 12px 16px;
+                font-weight: 300;
+            }
+
+            .top-bar h1 {
+                font-size: 20px;
+                font-weight: 200;
+            }
+        }
+    </style>
 </head>
 <body>
-    <h1>Testing Chatbot Flask</h1>
-    <form method="POST">
-        <label for="input_usuario">Input Message</label>
-        <input type="text" id="input_usuario" name="input_usuario" required>
-        <button type="submit">Submit</button>
-    </form>
+    <!-- Particle Background -->
+    <div class="particles" id="particles"></div>
 
-    <ul>
-        {% for msg in display %}
-            <h2>{{ msg.split(':')[0] }}</h2>{{ msg.split(':')[1] }}
-        {% endfor %}
-    </ul>
+    <!-- Top Bar -->
+    <div class="top-bar">
+        <h1>Chatbot Project</h1>
+    </div>
 
+    <!-- Main Container -->
+    <div class="container">
+        <div class="chat-container">
+            <!-- Bot Title -->
+            <div class="bot-title">Flokebot</div>
+
+            <!-- Input Container -->
+            <div class="input-container">
+                <form id="chatForm" method="POST" action="/">
+                    <input 
+                        type="text" 
+                        id="input_usuario" 
+                        name="input_usuario" 
+                        class="chat-input" 
+                        placeholder="Pergunte algo ao Floke..." 
+                        required
+                        autocomplete="off"
+                    >
+                </form>
+            </div>
+
+            <!-- Loading Animation -->
+            <div class="loading" id="loading">
+                <div class="loading-dots">
+                    <div class="loading-dot"></div>
+                    <div class="loading-dot"></div>
+                    <div class="loading-dot"></div>
+                </div>
+            </div>
+
+            <!-- Messages Container -->
+            <div class="messages-container" id="messagesContainer">
+                {% for msg in display %}
+                    {% if msg.startswith('👤') %}
+                        <div class="message user-message">
+                            <div class="message-content">{{ msg.split(': ', 1)[1] if ': ' in msg else msg }}</div>
+                            <div class="message-emoji">👤</div>
+                        </div>
+                    {% else %}
+                        <div class="message bot-message">
+                            <div class="message-emoji">🤖</div>
+                            <div class="message-content">{{ msg.split(': ', 1)[1] if ': ' in msg else msg }}</div>
+                        </div>
+                    {% endif %}
+                {% endfor %}
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Particle System
+        function createParticles() {
+            const particlesContainer = document.getElementById('particles');
+            const particleCount = 50;
+
+            for (let i = 0; i < particleCount; i++) {
+                const particle = document.createElement('div');
+                particle.className = 'particle';
+                
+                // Random position
+                particle.style.left = Math.random() * 100 + '%';
+                particle.style.top = Math.random() * 100 + '%';
+                
+                // Random animation delay
+                particle.style.animationDelay = Math.random() * 6 + 's';
+                
+                // Random size
+                const size = Math.random() * 4 + 2;
+                particle.style.width = size + 'px';
+                particle.style.height = size + 'px';
+                
+                // Random color from our palette
+                const colors = [
+                    'rgba(144, 238, 144, 0.4)', // Light green
+                    'rgba(128, 128, 128, 0.4)', // Grey
+                    'rgba(0, 139, 139, 0.4)',   // Dark cyan
+                    'rgba(255, 255, 255, 0.3)'  // White
+                ];
+                particle.style.background = colors[Math.floor(Math.random() * colors.length)];
+                
+                particlesContainer.appendChild(particle);
+            }
+        }
+
+        // Form Submission - Simple approach that works with Flask
+        document.getElementById('chatForm').addEventListener('submit', function(e) {
+            const input = document.getElementById('input_usuario');
+            const loading = document.getElementById('loading');
+            
+            if (input.value.trim() === '') {
+                e.preventDefault();
+                return;
+            }
+            
+            // Show loading animation
+            loading.classList.add('show');
+            
+            // Disable input to prevent multiple submissions
+            input.disabled = true;
+            
+            // Let the form submit normally to Flask
+            // Don't prevent default - let Flask handle it
+        });
+
+        // Enter key submission
+        document.getElementById('input_usuario').addEventListener('keypress', function(e) {
+            if (e.key === 'Enter') {
+                e.preventDefault();
+                document.getElementById('chatForm').submit();
+            }
+        });
+
+        // Auto-scroll messages
+        function scrollToBottom() {
+            const messagesContainer = document.getElementById('messagesContainer');
+            if (messagesContainer) {
+                messagesContainer.scrollTop = messagesContainer.scrollHeight;
+            }
+        }
+
+        // Initialize
+        document.addEventListener('DOMContentLoaded', function() {
+            createParticles();
+            scrollToBottom();
+            
+            // Focus on input field
+            const input = document.getElementById('input_usuario');
+            if (input) {
+                input.focus();
+            }
+        });
+
+        // Refresh particles periodically
+        setInterval(() => {
+            const particles = document.querySelectorAll('.particle');
+            particles.forEach(particle => {
+                if (Math.random() < 0.1) { // 10% chance to refresh position
+                    particle.style.left = Math.random() * 100 + '%';
+                    particle.style.top = Math.random() * 100 + '%';
+                }
+            });
+        }, 10000);
+    </script>
 </body>
 </html>
