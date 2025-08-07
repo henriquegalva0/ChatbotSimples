@@ -36,6 +36,8 @@ Esses parâmetros modificam conforme o seu objetivo e o seu hardware. Estou util
 ### Recomendações
 [Modelos quantizados](https://github.com/Efficient-ML/Awesome-Model-Quantization) são sempre bem-vindos. Além disso, **use GPU para o processamento** (tenho uma placa de vídeo da amd, logo isso não é possível para mim).
 
+Há outro modelo melhor para linguagem humanizada, o [zephyr7Balpha](https://huggingface.co/TheBloke/zephyr-7B-alpha-GGUF). Para utilizar ele basta somente baixá-lo e alterar o caminho do modelo em [app.py](app.py) para o nome do modelo específico.
+
 ## [English]
 
 # Project
@@ -73,6 +75,8 @@ These parameters may vary depending on your goals and hardware. I’m using an I
 
 ### Recommendations
 [Quantized models](https://github.com/Efficient-ML/Awesome-Model-Quantization) are always welcome. Also, **use a GPU for processing** (I have an AMD graphics card, so that’s not possible in my case).
+
+There is a better model for humanized lenguage, [zephyr7Balpha](https://huggingface.co/TheBloke/zephyr-7B-alpha-GGUF). Just by downloading and changing the model path in [app.py](app.py), you are able to use it.
 
 ## [Screenshot]
 ![Image](screenshot_project.png)
